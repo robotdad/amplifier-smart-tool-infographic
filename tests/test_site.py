@@ -17,6 +17,13 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "https://robotdad.github.io/amplifier-smart-tool-infographic/"
+APPROVED_BRAND = {
+    "infographic-picture-icon-512.png": "f7a2b6c52e6072a345974565fa65f46de9f857f80141a0b9cafe4d659e520d89",
+    "infographic-picture-icon-32.png": "27c626d31e715b8ed066c12ae09fccb4cd33ff14bd97649a5d1ae7263d5f451c",
+    "infographic-picture-icon-16.png": "c5fa3b34230a0dcd836121374ab0992ddf3ec792635e8425c042a15331e16dcb",
+    "infographic-picture-poster.png": "17d76bf189ed005d1d5166606764287fb84887cb34884e27e655f2198c644faf",
+    "infographic-picture-animation.mp4": "23348501104fb49d4cc9c592cec1dd48e488b47c242213fe8554f831048eb0c9",
+}
 
 
 class Page(HTMLParser):
@@ -150,8 +157,7 @@ def test_only_approved_static_assets_are_published(built: Path) -> None:
     expected = {"index.html", ".nojekyll"}
     expected |= {"assets/" + p.name for p in (ROOT / "site/assets").iterdir() if p.is_file()}
     expected |= {
-        "assets/" + name
-        for name in ("style.css", "site.js", "mark-loop.png", "mark-loop.gif", "theme-LICENSE.txt", "favicon.svg")
+        "assets/" + name for name in ("style.css", "site.js", "mark-loop.png", "mark-loop.gif", "theme-LICENSE.txt")
     }
     assert {str(p.relative_to(built)) for p in built.rglob("*") if p.is_file()} == expected
     for file in built.rglob("*"):
@@ -179,26 +185,149 @@ def test_no_rejected_product_brand_files_or_references(built: Path) -> None:
             ):
                 assert rejected not in text
     assert not (built / "assets/provenance.json").exists()
-    assert not list(built.rglob("*.mp4"))
+    assert [p.name for p in built.rglob("*.mp4")] == ["infographic-picture-animation.mp4"]
     assert not list(built.rglob("*.mov"))
     assert "brand" not in json.loads((ROOT / "site/site.json").read_text())
-    assert "brand" not in json.loads((ROOT / "site/provenance.json").read_text())
+    assert not (built / "assets/favicon.svg").exists()
+    assert {p.name for p in (ROOT / "site/assets").glob("*.png")} == {
+        name for name in APPROVED_BRAND if name.endswith(".png")
+    }
 
 
 def test_actual_output_hero_and_family_identity_remain(built: Path) -> None:
     html = (built / "index.html").read_text()
     page = Page(html)
     videos = [attrs for tag, attrs in page.nodes if tag == "video"]
-    assert not videos
+    assert len(videos) == 1
     assert "data-motion-src" in html
     assert "data-motion-toggle" in html
     assert "Actual Infographic output, not a logo or interface screenshot" in html
     assert '<div class="product-image"><a href="./assets/blue-hour.jpg"' in html
-    assert 'rel="icon" href="./assets/favicon.svg"' in html
+    icons = [attrs for tag, attrs in page.nodes if tag == "link" and attrs.get("rel") == "icon"]
+    assert {a["href"] for a in icons} == {
+        "./assets/infographic-picture-icon-16.png",
+        "./assets/infographic-picture-icon-32.png",
+    }
     assert "provenance.json" not in html
     for name in ("mark-loop.png", "mark-loop.gif"):
         assert (built / "assets" / name).read_bytes() == (ROOT / "site/theme/assets" / name).read_bytes()
     assert "prefers-reduced-motion: reduce" in (built / "assets/site.js").read_text()
+
+
+def test_approved_brand_bytes_and_alpha(built: Path) -> None:
+    brand = json.loads((ROOT / "site/provenance.json").read_text())["brand"]
+    assert brand["revision"] == "ddadd4d362da4a52bfcfe64a38eeab42"
+    assert brand["files"] == APPROVED_BRAND
+    assert brand["agent_binding"] == brand["agent_engine"] == "0.20.0"
+    assert brand["author_effort"] == "default/unset"
+    for name, digest in APPROVED_BRAND.items():
+        data = (built / "assets" / name).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == digest
+        assert data == (ROOT / "site/assets" / name).read_bytes()
+        if name.endswith(".png"):
+            with Image.open(built / "assets" / name) as image:
+                image.load()
+                if "-icon-" in name:
+                    size = int(name.split("-")[-1].split(".")[0])
+                    assert image.size == (size, size)
+                    assert image.mode == "RGBA"
+                    assert image.getchannel("A").getextrema() == (0, 255)
+                else:
+                    assert image.size == (1920, 1080)
+
+
+def test_brand_starts_static_with_native_controls_and_explicit_play(built: Path) -> None:
+    html = (built / "index.html").read_text()
+    page = Page(html)
+    video = next(attrs for tag, attrs in page.nodes if tag == "video")
+    assert video["id"] == "identity-video"
+    assert video["preload"] == "none"
+    assert video["poster"] == "./assets/infographic-picture-poster.png"
+    assert "controls" in video
+    assert "playsinline" in video
+    assert "autoplay" not in video
+    assert "loop" not in video
+    button = next(attrs for _, attrs in page.nodes if attrs.get("id") == "identity-play")
+    assert "hidden" in button
+    assert button["aria-controls"] == "identity-video"
+    assert "Brand animation / Made with Unfold" in html
+    assert "not an Infographic-generated example" in html
+    assert "View static PNG" in html
+    assert "5.5-second silent" in html
+    js = (built / "assets/infographic.js").read_text()
+    assert "data-motion-toggle" not in js
+    assert "data-motion-src" not in js
+    assert "[hidden] { display: none !important; }" in (built / "assets/infographic.css").read_text()
+
+
+@pytest.mark.parametrize("reduced", [False, True])
+def test_brand_motion_event_lifecycle(built: Path, reduced: bool) -> None:
+    # A DOM/media double checks event wiring; real playback is independently browser-reviewed.
+    script = r"""
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+function element(extra = {}) {
+  return Object.assign({listeners: {}, hidden: true, textContent: '',
+    addEventListener(name, callback) { this.listeners[name] = callback; }}, extra);
+}
+let plays = 0, loads = 0, fails = false;
+const video = element({paused: true, currentTime: 0,
+  async play() {
+    plays++;
+    if (fails) throw new Error('denied');
+    this.paused = false; this.listeners.play();
+  },
+  pause() { this.paused = true; this.listeners.pause(); },
+  load() { loads++; this.paused = true; this.currentTime = 0; }
+});
+const button = element(), status = element();
+const media = element({matches: REDUCED});
+const elements = {'identity-video': video, 'identity-play': button, 'identity-status': status};
+vm.runInNewContext(fs.readFileSync(process.argv[1], 'utf8'), {
+  document: {documentElement: {classList: {add() {}}}, getElementById: id => elements[id]},
+  window: {matchMedia: () => media}
+});
+(async () => {
+  assert.equal(plays, 0);
+  assert.equal(video.paused, true);
+  assert.equal(button.hidden, false);
+  await button.listeners.click();
+  assert.equal(plays, 1);
+  assert.equal(button.textContent, 'Pause animation');
+  await button.listeners.click();
+  assert.equal(video.paused, true);
+  assert.equal(button.textContent, 'Replay animation');
+  video.currentTime = 3;
+  await button.listeners.click();
+  assert.equal(video.currentTime, 0);
+  assert.equal(plays, 2);
+  video.paused = true; video.listeners.ended();
+  assert.equal(loads, 1);
+  assert.equal(plays, 2);
+  assert.equal(button.textContent, 'Replay animation');
+  await video.play(); // Native controls update the independent custom button.
+  assert.equal(button.textContent, 'Pause animation');
+  media.listeners.change({matches: true});
+  assert.equal(video.paused, true);
+  media.listeners.change({matches: false});
+  assert.equal(plays, 3); // Preference changes never start playback.
+  fails = true;
+  await button.listeners.click();
+  assert.match(status.textContent, /native controls/);
+  video.listeners.error();
+  assert.match(status.textContent, /static PNG/);
+})().catch(error => { console.error(error); process.exitCode = 1; });
+"""
+    subprocess.run(
+        [
+            "node",
+            "-e",
+            script.replace("REDUCED", json.dumps(reduced)),
+            str(built / "assets/infographic.js"),
+        ],
+        check=True,
+    )
 
 
 def test_build_refuses_source_or_nonempty_output(builder: ModuleType, tmp_path: Path) -> None:
@@ -252,4 +381,4 @@ def test_self_contained_preview_preserves_actual_embedded_bytes(built: Path, tmp
                 count += 1
     assert count >= 15
     assert "brandVideo" not in html
-    assert "data:video/" not in html
+    assert "data:video/mp4;base64," in html

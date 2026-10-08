@@ -114,6 +114,11 @@ Publish the static site without the rejected product mark or animation.
 Replacement branding remains a separate design task and is reviewed before
 being added to the live site.
 
+The replacement picture-frame/landscape candidate, Unfold revision
+`ddadd4d362da4a52bfcfe64a38eeab42`, was shown with its animation. The user
+approved it: "yeah that logo is fine." Use that exact approved branding for
+the site; the original rejected mark remains excluded.
+
 - [Creation and refinement](../contracts/creation-refinement.v1.md)
 - [Retained work](../contracts/retained-work.v1.md)
 

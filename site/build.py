@@ -58,6 +58,33 @@ def gallery(config: dict, theme: ModuleType) -> str:
     return "".join(sections)
 
 
+def brand_animation() -> str:
+    poster = asset_url("infographic-picture-poster.png")
+    video = asset_url("infographic-picture-animation.mp4")
+    return (
+        '<section class="section two-col" id="identity" aria-labelledby="identity-title">'
+        '<div><p class="eyebrow">Brand animation / Made with Unfold</p>'
+        '<h2 id="identity-title">Structure becomes an image.</h2>'
+        "<p>A chart becomes a landscape inside a picture frame. Our logo connects "
+        "infographic structure with freeform image creation.</p>"
+        '<p class="note">A 5.5-second silent brand animation created with '
+        '<a href="https://robotdad.github.io/amplifier-smart-tool-unfold/">Unfold</a>, '
+        "not an Infographic-generated example. Starts still and plays once when requested.</p></div>"
+        '<figure class="identity-demo">'
+        f'<video id="identity-video" controls playsinline preload="none" poster="{poster}" '
+        'width="1920" height="1080" aria-label="Unfold brand animation: chart becomes a landscape">'
+        f'<source src="{video}" type="video/mp4">'
+        f'<a href="{poster}">View the static logo</a></video>'
+        '<figcaption class="demo-actions">'
+        '<button id="identity-play" class="button" type="button" hidden '
+        'aria-controls="identity-video">Play animation</button>'
+        f'<a href="{poster}">View static PNG</a>'
+        f'<a href="{video}" download>Download animation</a>'
+        '<span id="identity-status" class="note" role="status" aria-live="polite"></span>'
+        "</figcaption></figure></section>"
+    )
+
+
 def build(output: Path) -> None:
     theme = load_theme()
     config = json.loads((SITE / "site.json").read_text())
@@ -68,6 +95,13 @@ def build(output: Path) -> None:
         raise ValueError("Output must be empty. Choose a fresh generated-site directory.")
     args = argparse.Namespace(local=False, family_owner="microsoft")
     body = theme.tool_page(config, args)
+    body = body.replace(
+        "<h1>Infographic</h1>",
+        '<div class="identity-heading">'
+        f'<img src="{asset_url("infographic-picture-icon-512.png")}" alt="" width="80" height="80">'
+        "<h1>Infographic</h1></div>",
+        1,
+    )
     body = body.replace(
         '<section class="section two-col"><div><p class="eyebrow">How it works',
         gallery(config, theme) + '<section class="section two-col"><div><p class="eyebrow">How it works',
@@ -93,10 +127,18 @@ def build(output: Path) -> None:
     )
     body = body.replace(
         '<section class="section"><div class="section-heading"><div><p class="eyebrow">Part of',
-        extra + '<section class="section"><div class="section-heading"><div><p class="eyebrow">Part of',
+        brand_animation()
+        + extra
+        + '<section class="section"><div class="section-heading"><div><p class="eyebrow">Part of',
         1,
     )
     document = theme.document(config, body, args)
+    document = document.replace(
+        '<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">',
+        '<link rel="icon" href="./assets/infographic-picture-icon-32.png" type="image/png" sizes="32x32">'
+        '<link rel="icon" href="./assets/infographic-picture-icon-16.png" type="image/png" sizes="16x16">',
+        1,
+    )
     document = document.replace(
         '<nav class="nav" aria-label="Main navigation">',
         '<nav class="nav" aria-label="Main navigation">'
@@ -118,13 +160,6 @@ def build(output: Path) -> None:
     shutil.copy2(SITE / "theme/assets/mark-loop.gif", assets / "mark-loop.gif")
     shutil.copy2(SITE / "theme/LICENSE", assets / "theme-LICENSE.txt")
     shutil.copytree(SITE / "assets", assets, dirs_exist_ok=True)
-    (assets / "favicon.svg").write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
-        '<rect width="40" height="40" fill="#f6f4ee"/>'
-        '<g fill="none" stroke="#92743a"><rect x="7" y="7" width="26" height="26"/>'
-        '<rect x="11" y="11" width="18" height="18" transform="rotate(20 20 20)"/>'
-        '<rect x="15" y="15" width="10" height="10" transform="rotate(40 20 20)"/></g></svg>'
-    )
     (output / "index.html").write_text(document, encoding="utf-8")
     (output / ".nojekyll").touch()
     print(f"Built Infographic: {output}")

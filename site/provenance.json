@@ -56,6 +56,32 @@
     ],
     "adaptation": "Pinned theme loaded by site/build.py; local family entry, actual output hero/gallery, local commands and ownership. Canonical family owner: microsoft. Theme presentation assets are unchanged; build.py-only lint/type adaptations are listed with both hashes."
   },
+  "brand": {
+    "tool": "Unfold",
+    "repository": "https://github.com/robotdad/amplifier-smart-tool-unfold",
+    "commit": "6855efbbb1e41f16024d8c4d08df3b548caca6b3",
+    "revision": "ddadd4d362da4a52bfcfe64a38eeab42",
+    "concept": "Picture frame, mountains and sun; a chart becomes a landscape.",
+    "approval": "Owner approved the replacement preview before site integration.",
+    "agent_binding": "0.20.0",
+    "agent_engine": "0.20.0",
+    "author": "openai/gpt-6-astra",
+    "author_effort": "default/unset",
+    "creates": 1,
+    "outer_revisions": 0,
+    "reported_author_cost_usd": 1.650989,
+    "reported_evaluation_cost_usd": 0.000531925,
+    "reported_total_cost_usd": 1.651520925,
+    "media": "1920x1080, 30 fps, 165 frames, 5.5 seconds, silent; play once, not a seamless loop.",
+    "derivation": "Unedited Unfold MP4 export and settled frame at 4.5s. Icons are padded alpha crops, Lanczos downsamples; shapes unedited.",
+    "files": {
+      "infographic-picture-icon-512.png": "f7a2b6c52e6072a345974565fa65f46de9f857f80141a0b9cafe4d659e520d89",
+      "infographic-picture-icon-32.png": "27c626d31e715b8ed066c12ae09fccb4cd33ff14bd97649a5d1ae7263d5f451c",
+      "infographic-picture-icon-16.png": "c5fa3b34230a0dcd836121374ab0992ddf3ec792635e8425c042a15331e16dcb",
+      "infographic-picture-poster.png": "17d76bf189ed005d1d5166606764287fb84887cb34884e27e655f2198c644faf",
+      "infographic-picture-animation.mp4": "23348501104fb49d4cc9c592cec1dd48e488b47c242213fe8554f831048eb0c9"
+    }
+  },
   "samples": [
     {
       "file": "blue-hour.jpg",
