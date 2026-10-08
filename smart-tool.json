@@ -1,0 +1,5 @@
+{
+  "manifest": "src/infographic/SMART_TOOL.md",
+  "cli_argv": ["infographic"],
+  "deterministic_smoke": ["manifest"]
+}
