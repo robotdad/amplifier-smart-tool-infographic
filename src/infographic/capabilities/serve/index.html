@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infographic Studio</title><link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script></head>
+<body><header><span class="mark">i.</span><div><h1>Infographic Studio</h1><p>Make complex ideas clear.</p></div><span id="connection">Connecting</span></header>
+<main><aside><h2>Your brief</h2><form id="create">
+<label>Creative mode<select name="mode"><option value="infographic">Guided infographic</option><option value="freeform">Freeform image / artwork</option></select></label>
+<label><span id="topic-label">What should we explain?</span><textarea name="topic" required maxlength="12000" placeholder="Explain how a heat pump works to a curious homeowner."></textarea></label>
+<label>Source material<textarea name="source" maxlength="30000" placeholder="Optional facts, figures and source text. No web research is performed."></textarea></label>
+<div class="row"><label data-guided>Panels<input name="panels" type="number" min="1" max="6" placeholder="Auto"></label>
+<label>Image shape<select name="orientation"><option>auto</option><option>portrait</option><option>landscape</option><option>square</option></select></label>
+<label data-guided>Assembly<select name="layout"><option>auto</option><option>vertical</option><option>horizontal</option><option>grid</option></select></label></div>
+<label>Visual style<input name="style" list="styles" placeholder="Your direction, or leave blank for suggestions"></label>
+<datalist id="styles"><option>minimal</option><option>editorial</option><option>dark-tech</option><option>sketch</option><option>claymation</option><option>brick-built</option><option>diorama</option></datalist>
+<label data-guided>Representation<select name="representation"><option>auto</option><option>diagram</option><option>scene</option><option>diorama</option></select></label>
+<div class="row"><label>Alternatives<select name="candidates"><option value="1">One</option><option value="2">Two</option><option value="3">Three</option></select></label>
+<label>Selection<select name="selection"><option value="manual">Let me choose</option><option value="auto">Choose automatically</option></select></label></div>
+<label>Content references (up to 3)<input type="file" name="references" accept="image/png,image/jpeg,image/webp" multiple></label>
+<label>Style references (up to 2)<input type="file" name="style_references" accept="image/png,image/jpeg,image/webp" multiple></label>
+<p class="hint">Content images inform the plan, not the visual style. Style images are sent alongside the chosen anchor. Each upload: at most 4 MiB.</p>
+<label>Must include / avoid<textarea name="constraints" maxlength="4000" placeholder="Exact wording, audience, language, accessibility, layout requirements..."></textarea></label>
+<details><summary>Intelligence &amp; image service</summary>
+<label>Reasoning provider<select name="provider"><option>openai</option><option>anthropic</option><option>gemini</option><option>chatgpt</option><option>github</option></select></label>
+<label>Reasoning model<input name="model" value="gpt-6-luna" required></label>
+<label>Reasoning effort<select name="reasoning_effort"><option>medium</option><option>low</option><option>high</option><option>xhigh</option><option>max</option></select></label>
+<label>Gemini image model<input name="image_model" value="gemini-3.1-flash-image-preview" required></label>
+<label>Automatic repair rounds<select name="repair_rounds"><option value="0">None: keep the first reviewed result</option><option value="1">One: regenerate once if review finds issues</option></select></label>
+<p class="hint">Agent 0.22 honors your provider, model and effort. Defaults change with provider; account entitlement is not guaranteed. Gemini image credentials are always needed. No silent fallback.</p></details>
+<p class="hint">Create sends your brief and applicable references to the selected reasoning provider and Gemini image service. Alternatives add image calls; optional repair regenerates once. Paid usage may apply. <span id="planning-hint">Automatic planning can choose up to six panels; set an explicit count to bound it more tightly.</span></p>
+<button type="submit">Create infographic</button></form>
+<section class="library"><h2>Retained work</h2><button id="refresh" class="secondary">Refresh</button><div id="library"></div></section></aside>
+<article><div id="notice" role="status" aria-live="polite">Open the launch URL to connect.</div>
+<section id="recovery" hidden><p>A submission was retained before sending. Reconcile it before starting another.</p><button id="observe" class="secondary">Check retained request</button> <button id="retry" class="secondary">Retry exact saved request</button></section>
+<section id="empty"><p class="eyebrow">FROM INFORMATION TO UNDERSTANDING</p><h2>A visual story,<br>not another wall of text.</h2><p>Start with a clear brief. Get a plan, individual panels, an assembled image and a review of the actual pixels.</p><div class="steps"><span>01 Plan</span><span>02 Render</span><span>03 Review</span></div></section>
+<section id="result" hidden><div class="result-head"><div><p class="eyebrow" id="state"></p><h2 id="title"></h2></div><a id="download" class="button" hidden download>Download PNG</a></div>
+<p id="identity" class="hint"></p><div id="candidates" class="candidates"></div>
+<img id="composite" alt="Generated image" hidden><div id="files"></div>
+<section class="review"><h3>Visual review</h3><p id="review"></p><ul id="issues"></ul></section>
+<form id="refine" hidden><label>What should change?<textarea name="feedback" required maxlength="6000" placeholder="Describe your edit. The displayed prior images are supplied for revision."></textarea></label>
+<details><summary>Change structure, style, or provider</summary><div id="revision-settings"></div>
+<label>Replace content references (optional)<input type="file" name="references" accept="image/png,image/jpeg,image/webp" multiple></label>
+<label>Replace style references (optional)<input type="file" name="style_references" accept="image/png,image/jpeg,image/webp" multiple></label>
+<label><input type="checkbox" name="clear_references"> Clear inherited content references</label>
+<label><input type="checkbox" name="clear_style_references"> Clear inherited style references</label></details>
+<button type="submit">Refine as a new version</button><p class="hint">Targets this exact result. Original images and plan are supplied; original files stay intact.</p></form>
+<button id="interrupt" class="secondary" hidden>Acknowledge interrupted operation</button>
+<details><summary>Plan, provenance &amp; execution evidence</summary><pre id="metadata"></pre></details>
+</section></article></main></body></html>

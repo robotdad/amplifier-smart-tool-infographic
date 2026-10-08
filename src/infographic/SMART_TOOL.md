@@ -12,18 +12,14 @@ platforms:
   - macos
   - windows
 requires:
-  - name: gh
-    purpose: >-
-      Generates the token that signs in to GitHub Copilot. Without it, the model-backed
-      capabilities cannot authenticate.
+  - name: reasoning-provider
+    purpose: Amplifier Agent reasoning credentials or subscription login for the selected provider.
     optional: true
-    install: https://cli.github.com/
-  - name: github-copilot-subscription
-    purpose: >-
-      A Copilot subscription on the account signed in to gh powers the model-backed
-      capabilities. Without it, only the deterministic capabilities run.
+    install: https://github.com/microsoft/amplifier-agent/blob/main/docs/providers.md
+  - name: gemini-image-service
+    purpose: GOOGLE_API_KEY or GEMINI_API_KEY for image generation, independent of reasoning provider.
     optional: true
-    install: https://github.com/github/copilot-cli#prerequisites
+    install: https://ai.google.dev/gemini-api/docs/image-generation
 ---
 
 Create and refine styled single- and multi-panel infographics with Amplifier Agent and image generation.
@@ -58,18 +54,27 @@ Verify with `infographic manifest`, which needs no credentials.
 
 ## Prerequisites
 
-Deterministic capabilities need only `uv`. Model-backed capabilities run through GitHub
-Copilot, signed in as the GitHub CLI's user: `gh` must be installed and `gh auth login`
-completed with an account that has a Copilot subscription. Without that, a model-backed
-capability fails immediately and names what to configure; it never falls back to a
-deterministic answer.
+Deterministic capabilities require no provider. Reasoning runs through public Amplifier Agent:
+`openai`, `anthropic`, `gemini`, `chatgpt` or `github`, with an explicit compatible model.
+OpenAI/Anthropic/Gemini use their environment API keys; ChatGPT uses Agent-compatible OAuth;
+GitHub uses a documented Copilot token variable or cached SDK login and entitlement. Images always use the separate Gemini service.
+`check` reports local presence, not live authentication. Credentials are never printed.
 
-Runs on Linux, macOS, and Windows.
+Portable Python implementation; Linux checked locally. Windows and macOS parity is not yet verified.
 
 ## Straight and smart paths
 
-Deterministic capabilities run with no provider configured. Model-backed capabilities go
-through GitHub Copilot, signed in as the GitHub CLI's user, and say so in their help text.
+Start with `serve` for a local browser experience, or `generate` for the command line.
+Inspect the retained plan, panels, composite, hashes and visual review; `refine` creates a child result.
+No provider fallback, shell tools, arbitrary model writes or automatic crash replay.
+One optional repair round is caller-controlled. Execution completion is not a quality verdict.
+Agent binding and engine are 0.22.0. All routes use explicit public reasoning-effort options.
+Use `--mode freeform` for caller-directed artwork without infographic structure.
+Infographic mode offers automatic density/layout planning, curated/custom styles and dioramas.
+Request 2-3 candidates for alternatives; manual choice pauses until `select`.
+Original style references stay alongside the analyzed first-image anchor.
+Browser supports role-specific reference uploads and structural/provider refinement controls.
+Interrupted runs retain evidence; `close-interrupted` acknowledges stopped work without replay.
 
 ## Output and failure contract
 

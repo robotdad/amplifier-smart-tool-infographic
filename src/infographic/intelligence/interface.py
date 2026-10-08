@@ -24,6 +24,6 @@ class Intelligence(Protocol):
 
 
 def default_intelligence() -> Intelligence:
-    from infographic.intelligence.copilot import CopilotIntelligence
+    from infographic.intelligence.agent import AgentIntelligence
 
-    return CopilotIntelligence()
+    return AgentIntelligence()

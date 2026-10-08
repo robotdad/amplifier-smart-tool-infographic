@@ -12,6 +12,6 @@ def test_manifest_matches_the_descriptor_and_package() -> None:
     manifest = load_manifest()
     descriptor = json.loads((DISTRIBUTION_ROOT / "smart-tool.json").read_text(encoding="utf-8"))
 
-    assert DISTRIBUTION_ROOT / descriptor["manifest"] == MANIFEST_PATH
+    assert (DISTRIBUTION_ROOT / descriptor["manifest"]).read_bytes() == MANIFEST_PATH.read_bytes()
     assert manifest.name == descriptor["cli_argv"][0]
     assert manifest.version == version("infographic")

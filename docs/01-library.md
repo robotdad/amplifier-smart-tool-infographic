@@ -16,11 +16,45 @@ class Intelligence(Protocol):
 ```
 
 `preflight` raises `InfographicError` naming what to configure when the implementation cannot run.
-`run` executes one agent: `AgentRequest` holds the prompt, model, optional workspace, and optional output schema; `AgentResult` holds the text, structured output, or error.
-Setting `AgentRequest.resume` to an earlier `AgentResult.session_id` continues that session instead of starting a fresh one, so the agent keeps what it learned.
+`run` executes one tool-free ephemeral Agent turn: `AgentRequest` holds prompt, provider, model, reasoning effort, timeout, required output schema and optional actual image bytes. `AgentResult` holds validated structured output, available usage, or a safe error.
 
-`default_intelligence()` returns the shipped implementation, `CopilotIntelligence`, built on the [GitHub Copilot SDK](https://github.com/github/copilot-sdk) and signed in through the GitHub CLI.
+`default_intelligence()` returns `AgentIntelligence`, built only on [Amplifier Agent's public API](https://github.com/microsoft/amplifier-agent).
 Another implementation is a module satisfying the protocol and a branch in that factory.
+
+The image service has a separate `ImageService` protocol (`preflight`, `render`) and a Gemini SDK implementation. It never changes the reasoning provider. Provider errors do not trigger fallback. Isolated worker processes use tool-owned public Agent 0.22 configuration, preventing unrelated host capture destinations and request overrides from being inherited. Binding and engine are both pinned to 0.22.0 in installation metadata, not only the development lock.
+
+Effort uses public `AgentOptions.reasoning_effort` on all five routes, alongside `working_directory`, `sessions_directory` and scoped environment. No private engine imports or unsupported provider-parameter workarounds. Effective effort is not claimed from configuration alone.
+
+## Product capabilities
+
+```python
+from pathlib import Path
+from infographic import lib
+from infographic.models import Brief
+
+result = lib.generate(
+    Brief(topic="Explain heat pumps", panels=3, layout="horizontal"),
+    store=Path("./results"),
+)
+```
+
+- `generate(brief, store, references=None, parent_id=None, feedback="", request_id=None, background=False, intelligence=None, image_service=None, style_references=None, revision_images=None)`: infographic or freeform planning, rendered alternatives, retained selection, assembly and actual-image review. Content references are at most three raster byte strings; style references at most two. Revision images are up to six prior outputs, supplied automatically by refine. Exact request IDs make retries read-only. Injection interfaces support provider-free tests. `background=True` returns admission while a bounded non-daemon thread runs.
+- `select(run_id, candidate, store, request_id=None, background=False, intelligence=None, image_service=None)`: commit a 1-based candidate number from an awaiting-selection record. Exact selection retries observe the original operation. Alternative selections cannot replace the retained choice.
+- `close_interrupted(run_id, store)`: deterministic acknowledgement of stopped work, refuses while the execution lock is held. Records previous stage and preserves outputs; never replays.
+- `refine(run_id, feedback, store, changes=None, **kwargs)`: model-backed new child, inheriting the parent brief/settings with explicit `Brief` field overrides. Original bytes stay untouched.
+- `inspect(run_id, store, verify=True)`: retained record with image hashes verified by default.
+- `list_results(store, limit=50)`: recent result summaries, maximum 200.
+- `artifact(run_id, name, store)`: only a registered artifact with matching hash, as bytes.
+- `stitch_bytes(images, layout="vertical")`: 1 to 6 images assembled without cropping; returns PNG.
+- `styles()`: original style suggestions.
+- `check()`: installed versions and local credential presence, not live authentication.
+- `dashboard(store, port=8765)`: constructs a loopback-only server; caller owns `serve_forever()` and `server_close()`.
+
+Store defaults to `~/.local/share/infographic`. `Brief` validates mode, bounded source text, optional explicit panel count (otherwise density-based), auto/explicit layout and orientation, style/representation, 1-3 candidates, manual/auto selection, provider/model settings, per-call timeout and at most one automatic repair. Omitted model resolves to the chosen provider's default. Freeform accepts one output image, without infographic structure.
+Results include `id`, `parent_id`, original brief, plan, role-labelled references/input hashes, candidates, selected candidate/actor/identity, observed anchor style, per-image files/hashes, attempts, review, stage history and call receipts. Manual alternatives pause in `awaiting-selection`; no read resumes generation. Failed/interrupted history does not block deliberate new work.
+`status=completed` and `review.verdict=met` are different assertions. External failures leave `status=failed`, a safe error and any usable partial images. Exact retries never re-execute a failed or interrupted request.
+
+The store is private local application data, not a multi-user security boundary against another process running as the same OS user. Keep its directory and launch URL private.
 
 ## Manifest
 

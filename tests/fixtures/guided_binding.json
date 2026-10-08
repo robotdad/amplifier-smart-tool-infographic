@@ -1,0 +1,33 @@
+{
+  "provenance": {
+    "kind": "Exact creative input excerpts from retained live-guided result records; not new generation",
+    "parent": "3a3db6237e674fc8ba7c7a3b4527fb4c",
+    "child": "5e698eb06dbf4b0d8de9667458318577",
+    "source": "../.work/infographic-browser-validation/live-guided/retained-store",
+    "current_plan_rule": "Parent panels 1 and 2 are byte-equivalent JSON values in the current plan; replace only panel 3 with revised_final."
+  },
+  "topic": "Create exactly three vertically arranged panels explaining a team's release workflow in claymation style. Panel 1: Prepare - run tests and review the changelog. Panel 2: Verify - install the build in an isolated environment and exercise the main workflow. Panel 3: Release - publish the checked build and retain rollback instructions. Use only these facts; no invented metrics.",
+  "feedback": "Revise the retained three-panel release workflow: replace the final heading Release with Ship with confidence, and add Keep the previous build available beneath the rollback instruction. Preserve the three-panel order and claymation look.",
+  "parent_panels": [
+    {
+      "title": "1. Prepare",
+      "content": ["Run tests", "Review the changelog"],
+      "visual": "A clay workbench in a miniature workshop. One sculpted developer figure stands at the bench running tests on a small clay device with a checklist card. A second figure holds a changelog scroll and reads it under a soft desk lamp. Props include a test tray with labeled tubes and a stack of changelog pages. The scene is warm and orderly, establishing the start of the workflow."
+    },
+    {
+      "title": "2. Verify",
+      "content": ["Install the build in an isolated environment", "Exercise the main workflow"],
+      "visual": "A sealed clay glass enclosure sits at the center of the set, representing the isolated environment. A sculpted figure places a small build block inside through a hatch. Inside the enclosure, a tiny clay figure walks through the main workflow along a marked path of stepping stones. Outside, a second figure watches through the glass holding a clipboard. Props include a padlock-style latch, a workflow track, and a checkmark card."
+    },
+    {
+      "title": "3. Release",
+      "content": ["Publish the checked build", "Retain rollback instructions"],
+      "visual": "A small clay loading dock with a launch ramp. A sculpted figure carries the verified build block up the ramp and sets it onto a publishing platform. A second figure files a rollback instructions binder into a labeled clay cabinet beside the platform, keeping it within reach. Props include a publish flag, a shipping crate marked as the checked build, and a rollback folder tab. The scene closes the workflow with clear, completed actions."
+    }
+  ],
+  "revised_final": {
+    "title": "3. Ship with confidence",
+    "content": ["Publish the checked build", "Retain rollback instructions", "Keep the previous build available"],
+    "visual": "A small clay loading dock with a launch ramp. A sculpted figure carries the verified build block up the ramp and sets it onto a publishing platform. A second figure files a rollback instructions binder into a labeled clay cabinet beside the platform, keeping it within reach. Beneath the rollback instructions label, a lower clay shelf holds a previous build crate with a small tactile sign reading Keep the previous build available, placed so the figure's hand rests near it. Props include a publish flag, a shipping crate marked as the checked build, and a rollback folder tab. The scene closes the workflow with clear, completed actions."
+  }
+}

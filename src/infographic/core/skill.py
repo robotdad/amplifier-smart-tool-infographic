@@ -13,6 +13,21 @@ DISTRIBUTION = "infographic"
 # the Markdown beside its code, at `capabilities/<name>/SKILL.md`.
 CAPABILITIES = (
     Capability("manifest", "Print the tool's manifest as JSON.", model_backed=False, skill="core/manifest.md"),
+    Capability("generate", "Plan, render, and review retained infographics.", True, "capabilities/generate/SKILL.md"),
+    Capability("refine", "Create a child result from retained work.", True, "capabilities/refine/SKILL.md"),
+    Capability("inspect", "Read a result and verify artifact hashes.", False, "capabilities/inspect/SKILL.md"),
+    Capability("list", "List recent retained results.", False, "capabilities/list/SKILL.md"),
+    Capability("styles", "List suggested visual styles.", False, "capabilities/styles/SKILL.md"),
+    Capability("stitch", "Assemble local panels without a model.", False, "capabilities/stitch/SKILL.md"),
+    Capability("check", "Inspect local package and credential readiness.", False, "capabilities/check/SKILL.md"),
+    Capability("serve", "Open the local create and review dashboard.", False, "capabilities/serve/SKILL.md"),
+    Capability("select", "Retain an exact candidate selection and finish it.", True, "capabilities/select/SKILL.md"),
+    Capability(
+        "close-interrupted",
+        "Acknowledge stopped work without replay.",
+        False,
+        "capabilities/close-interrupted/SKILL.md",
+    ),
 )
 
 # Paths relative to the skill directory. Both ship inside the package, so both resolve after installation.

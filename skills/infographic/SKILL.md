@@ -26,6 +26,11 @@ uvx --from git+https://github.com/robotdad/amplifier-smart-tool-infographic info
 ```
 ## Use it
 
+Choose guided infographic or `--mode freeform`; presets are optional. Request alternatives with
+`--candidates 2` or `3`, then select the exact retained candidate with `select`. Automatic choice
+requires `--selection auto`. `serve` exposes the same modes, references, selection and refinement
+in a local browser. Reasoning uses Agent 0.22 with provider-specific defaults; Gemini generates images.
+
 Run `infographic --help`. It prints the tool's skill: when to use it, every capability, sharp
 edges, and which files to read. Follow it. Then read the capability's own skill with
 `infographic <command> --help` before calling it: it carries the arguments, a worked

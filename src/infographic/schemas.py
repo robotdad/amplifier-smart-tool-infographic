@@ -2,8 +2,8 @@ from typing import Literal, NamedTuple
 
 from pydantic import BaseModel, Field
 
-DEFAULT_INTELLIGENCE_MODEL = "gpt-6-astra"
-ReasoningEffort = Literal["low", "medium", "high", "xhigh", "max"]
+DEFAULT_INTELLIGENCE_MODEL = "gpt-6-luna"
+ReasoningEffort = Literal["none", "minimal", "low", "medium", "high", "xhigh", "max"]
 
 SEMVER_PATTERN = r"^\d+\.\d+\.\d+$"
 SLUG_PATTERN = r"^[a-z0-9]+(-[a-z0-9]+)*$"

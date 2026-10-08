@@ -9,8 +9,9 @@ Install:
 - [Git](https://git-scm.com/)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/): Manages Python environments
 - [prek](https://github.com/j178/prek): Used for precommit hooks. Recommended to install through PyPI/uv with `uv tool install prek`. Use `uv tool upgrade prek` to update it.
-- [GitHub CLI](https://cli.github.com/) for intelligence features with GitHub Copilot.
-- [GitHub Copilot subscription](https://github.com/github/copilot-cli#prerequisites) for intelligent features.
+- Python 3.13 or newer. The project environment is independent of an outer Amplifier host.
+- Provider credentials only for explicitly authorized live tests. Ordinary pytest uses simulated external services.
+- Chromium for real browser regression tests: after `uv sync`, run `uv run playwright install chromium` (add `--with-deps` when required by the OS). Browser tests use fixture services, never paid generation.
 
 ### Initial Setup
 
@@ -25,6 +26,10 @@ Install:
 ### Essential Development Commands
 
 *Commands should be run from the repository root, unless otherwise specified.*
+
+If an outer host supplies `UV_OVERRIDE`, remove it for project commands (`env -u UV_OVERRIDE uv ...` on POSIX).
+Verify `infographic check` reports the installed public Agent and engine versions. Do not patch private engine internals.
+The Agent's GitHub provider extra may depend on Copilot SDK internally; this product uses only Agent's public interface.
 
 #### Precommit hooks
 

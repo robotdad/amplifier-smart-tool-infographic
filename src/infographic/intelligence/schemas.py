@@ -1,47 +1,24 @@
-"""What an intelligence implementation is asked to do, and what it answers with."""
+"""Bounded, tool-free requests to the public Agent API."""
 
-from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, Field
 
-from infographic.schemas import ReasoningEffort
-
-
-class HostWorkspace(BaseModel):
-    """A directory on this machine; the agent's tools execute here."""
-
-    path: Path
+from infographic.schemas import DEFAULT_INTELLIGENCE_MODEL, ReasoningEffort
 
 
 class AgentRequest(BaseModel):
-    """One agent run: a prompt, a model, and optionally a place to work and a shape to answer in."""
-
     prompt: str
-    model: str
-    workspace: HostWorkspace | None = Field(
-        default=None, description="Where the agent may read and run things; None means a plain completion, no tools"
-    )
-    writable: bool = Field(default=False, description="Whether the agent may create and modify files in the workspace")
-    output_schema: dict[str, Any] | None = Field(
-        default=None, description="JSON schema the structured output must satisfy"
-    )
+    provider: str = "openai"
+    model: str = DEFAULT_INTELLIGENCE_MODEL
+    output_schema: dict[str, Any]
+    images: list[bytes] = Field(default_factory=list)
     reasoning_effort: ReasoningEffort = "medium"
-    timeout_seconds: int = Field(gt=0)
-    resume: str | None = Field(
-        default=None,
-        description="The session_id of an earlier result to continue in, so the agent keeps what it learned; None starts fresh",
-    )
+    timeout_seconds: int = Field(default=180, ge=10, le=600)
 
 
 class AgentResult(BaseModel):
-    """The run's outcome; in-flight agent failures set `error` instead of raising."""
-
-    output: dict[str, Any] | None = Field(
-        default=None, description="The structured output, conforming to the request's schema when one was given"
-    )
-    text: str = Field(default="", description="The agent's final message")
+    output: dict[str, Any] | None = None
+    text: str = ""
     error: str | None = None
-    session_id: str | None = Field(
-        default=None, description="Identifies this run's session so a later request can resume it"
-    )
+    usage: dict[str, Any] | None = None

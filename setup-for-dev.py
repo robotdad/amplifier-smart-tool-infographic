@@ -10,7 +10,7 @@ import subprocess
 REFERENCE_ROOT = Path(__file__).parent / "reference"
 REFERENCES = [
     "https://github.com/microsoft/amplifier-smart-tools",
-    "https://github.com/github/copilot-sdk",
+    "https://github.com/microsoft/amplifier-agent",
     "https://github.com/agentskills/agentskills",
 ]
 
