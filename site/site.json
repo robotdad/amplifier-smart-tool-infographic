@@ -1,0 +1,67 @@
+{
+  "kind": "tool",
+  "key": "infographic",
+  "title": "Infographic | Amplifier Smart Tools",
+  "name": "Infographic",
+  "promise": "Strong defaults. Not rails.",
+  "description": "Turn an idea into a styled infographic, or direct a freeform image of your own. Review the actual result, refine it, and keep the original.",
+  "accent": "#486b61",
+  "image": "site/assets/blue-hour.jpg",
+  "alt": "Actual freeform output: a watercolor observatory on a coastal cliff at blue hour, with warm window light and sea mist.",
+  "width": 1200,
+  "height": 896,
+  "caption": "Actual Infographic output, not a logo or interface screenshot. Watercolor observatory at blue hour. Display JPEG derivative.",
+  "flow_title": "From your direction to retained work.",
+  "flow_intro": "Use infographic structure when it helps. Leave it behind when it does not. The same local library retains plans, references, alternatives, reviews and linked revisions.",
+  "steps": [
+    ["Describe what you want.", "Start from a brief, content references or style references. Choose guided infographics or freeform images, with explicit style, layout and provider choices."],
+    ["Make and inspect.", "Plan panels and layout automatically or override them. Request up to three alternatives, select one, then build related panels using the first rendered panel as a style anchor."],
+    ["Refine without replacing.", "Supply a new direction with the existing images as inputs. Keep the original, the exact parent link and the new version. Download the composite or individual PNG panels."]
+  ],
+  "detail_title": "Structure when useful. Freedom when needed.",
+  "details": [
+    ["Guided infographics", "One to six panels, density-aware layouts, curated or custom aesthetics, dioramas and visual consistency across panels."],
+    ["Freeform images", "No compulsory headings, labels, diagrams or panels. Direct a scene, an aesthetic or an image-guided revision in your own words."],
+    ["Review the actual image", "Image-based review separates execution from quality. Optional bounded repair is explicit, not a promise of perfect text or factual correctness."],
+    ["Keep your work", "Retained originals, alternatives, selections, references and revision history. Inspect existing work without model credentials."]
+  ],
+  "prompt": "Use Infographic to explain our release workflow in three claymation panels. Then help me review and refine the result without losing the original.",
+  "install": "uv tool install git+https://github.com/robotdad/amplifier-smart-tool-infographic@main",
+  "prerequisites": "Requires uv and Python 3.13+. Generation requires a configured reasoning provider plus GOOGLE_API_KEY or GEMINI_API_KEY for the separate Gemini image service.",
+  "model_note": "Reasoning uses Amplifier Agent 0.22.0 (binding and engine). Choose OpenAI, Anthropic, Gemini, ChatGPT OAuth or GitHub Copilot. Your reasoning choice does not replace the Gemini image service. ChatGPT needs Agent-compatible OAuth login; GitHub needs Copilot entitlement. Explicit models are not silently substituted.",
+  "guide": "docs/02-cli.md",
+  "related": ["unfold", "stories", "outtake"],
+  "commands": [
+    {"id": "browser-command", "title": "Open the local browser interface", "code": "infographic check\ninfographic serve --store ./results"},
+    {"id": "cli-command", "title": "Create from the CLI", "code": "infographic generate \"Explain a heat pump to a homeowner\" --panels 3 --layout horizontal --store ./results\ninfographic list --store ./results\ninfographic refine RESULT_ID \"Use larger labels\" --store ./results"},
+    {"id": "freeform-command", "title": "Create without infographic structure", "code": "infographic generate \"A watercolor coastal observatory at blue hour. No text.\" --mode freeform --orientation landscape --store ./results"},
+    {"id": "library-command", "title": "Add the Python library to your project", "code": "uv add \"infographic @ git+https://github.com/robotdad/amplifier-smart-tool-infographic@main\""}
+  ],
+  "gallery": [
+    {
+      "id": "freeform",
+      "title": "Same idea. A different dawn.",
+      "description": "A freeform watercolor, then an image-guided revision from blue hour to pale peach dawn. No required text or infographic panels. These are actual generated outputs, not interface mockups.",
+      "quality": "Independent model review judged the requested freeform functionality met. These are examples, not human acceptance or a guarantee of future results. Generative revisions do not promise pixel-identical geometry. Downloads are compressed display JPEGs, not the original PNGs.",
+      "samples": [
+        {"image": "blue-hour.jpg", "width": 1200, "height": 896, "label": "Original / Freeform", "title": "Coastal observatory at blue hour", "alt": "Watercolor cliffside observatory in indigo blue-hour light, a warm window overlooking misty water.", "caption": "A cinematic watercolor brief with indigo and amber, sea mist and no text. Reasoning: OpenAI. Image service: Gemini."},
+        {"image": "dawn-revision.jpg", "width": 1200, "height": 896, "label": "Revision / Freeform", "title": "From blue hour to peach dawn", "alt": "The coastal observatory reinterpreted in pale peach dawn light with its watercolor treatment retained.", "caption": "Requested change: keep the observatory composition and watercolor treatment, replace blue hour with dawn, and keep the image text-free. The original remains retained."}
+      ]
+    },
+    {
+      "id": "guided",
+      "title": "Change the final panel, not the story.",
+      "description": "A three-panel claymation release workflow. The newest revision changes only the final heading to '3. Ship with confidence' and adds 'Keep the previous build available' beneath the rollback instructions.",
+      "quality": "Execution completed. The product's own review still says NEEDS WORK for text and visual details. Independent model review judged original and newest revision MET for the requested functionality. Tiny text remains uncertain. An earlier sibling revision failed the request and remains preserved locally; this gallery does not relabel that failure. These judgments are not human acceptance.",
+      "samples": [
+        {"image": "guided-original.jpg", "width": 896, "height": 3600, "label": "Original / Guided", "title": "Prepare. Verify. Release.", "alt": "Three vertically arranged claymation panels depicting prepare, verify and release stages with miniature people and computers.", "caption": "Actual three-panel composite. Reasoning: Anthropic. Image service: Gemini. Open the image to inspect small text."},
+        {"image": "guided-new-revision.jpg", "width": 896, "height": 3600, "label": "Newest revision / Guided", "title": "Ship with confidence", "alt": "Revised claymation release workflow: Prepare and Verify above a final Ship with confidence panel and rollback guidance.", "caption": "Actual revised composite, retaining the original as its parent. Functional change met in independent model review; product-quality issues remain."}
+      ]
+    }
+  ],
+  "limits": [
+    ["Inspect before using", "Generated small text can glitch. There is no web fact checking, perfect text guarantee, image-service cost estimate or pixel-identical edit guarantee."],
+    ["Supported is not all verified", "Live reasoning exercised OpenAI, Anthropic, Gemini and GitHub. ChatGPT's missing-login failure was checked, but successful ChatGPT generation was not verified. macOS/Windows parity is not verified."],
+    ["Still local, still evolving", "No MCP App yet, no cancellation or automatic crash replay, and no upstream-style per-candidate automatic screening/regeneration. Interrupted work remains inspectable. Vision and contracts remain drafts."]
+  ]
+}

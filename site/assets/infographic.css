@@ -1,0 +1,22 @@
+/* Infographic additions; the catalog family stylesheet remains unmodified. */
+.sample-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.sample { min-width: 0; border: 1px solid var(--line); }
+.sample img { width: 100%; height: auto; }
+.sample figcaption { padding: 22px; }
+.sample h3 { font-size: 28px; margin: 10px 0 16px; }
+.sample figcaption a { display: inline-block; margin-top: 18px; }
+.sample-grid + .note { margin-top: 24px; }
+.ownership h2 { margin-bottom: 24px; }
+.demo-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.hero-grid > *, .two-col > *, .detail-grid > * { min-width: 0; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.copy { display: none; }
+.js-enabled .copy { display: inline-block; }
+[hidden] { display: none !important; }
+@media (max-width: 600px) {
+  .sample-grid { grid-template-columns: minmax(0, 1fr); }
+  .image-caption { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .tool-hero h1 { font-size: clamp(44px, 12vw, 68px); }
+  .team { flex-wrap: wrap; gap: 4px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

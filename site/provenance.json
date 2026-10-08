@@ -1,0 +1,113 @@
+{
+  "theme": {
+    "repository": "https://github.com/microsoft/amplifier-smart-tools-catalog",
+    "commit": "59339a5c52aa909f7f7e18c2c92de82ec66eae4c",
+    "files": [
+      {
+        "path": "site/theme/LICENSE",
+        "bytes": 1141,
+        "git_blob": "9e841e7a26e4eb057b24511e7b92d42b257a80e5",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      },
+      {
+        "path": "site/theme/assets/mark-loop.gif",
+        "bytes": 660876,
+        "git_blob": "94bc5e299c2f522502eaaf15e2ecfde2d175064d",
+        "sha256": "5d56ab191e9da10c3e1505e5809cc171d5e255747797101a5f71b6ee9121206e"
+      },
+      {
+        "path": "site/theme/assets/mark-loop.mp4",
+        "bytes": 453135,
+        "git_blob": "efe815253f1000af58923e1fce208b60e6dd619d",
+        "sha256": "30ffe769b1ed48821a0209b5c6c2f812e1f6a060ca22be44da3d39c936f3641a"
+      },
+      {
+        "path": "site/theme/assets/mark-loop.png",
+        "bytes": 8973,
+        "git_blob": "accc073eb655054a68f73300f8be2263ea8ea323",
+        "sha256": "778da2e4475e1bfb64cc8add3ebd599d3892db08b47c568291e8e9a4cfc8f7e0"
+      },
+      {
+        "path": "site/theme/build.py",
+        "bytes": 29974,
+        "git_blob": "449a0fa7c1563d5471ce85abd0dbf3d426bf6892",
+        "sha256": "5ec053f9d4846600bdeae2c57b5e771ca2b20b78d46c4167f45a3ee772399707",
+        "vendored_sha256": "571ff0e73aea90124242b0b7977608fec3ab507b4c19ccc1ac4974d08827a287",
+        "local_changes": "Ruff import/format normalization and chapter variable naming; string guard on optional specification-reader link for type checking. Tool-page markup unchanged."
+      },
+      {
+        "path": "site/theme/family.json",
+        "bytes": 921,
+        "git_blob": "cdd853297890304893b2423af1b5b5062ea610c5",
+        "sha256": "3d326cc195e767e6a89efc894802692d9d0afb2ea0b9119c18d588cc78006986"
+      },
+      {
+        "path": "site/theme/site.js",
+        "bytes": 3047,
+        "git_blob": "3fee125154bec85f5606b00678d7d003427d3e83",
+        "sha256": "ce8d2bf1add562fa6ab2e6b0abab74a49d51f0959863b086de7d30b37e2de122"
+      },
+      {
+        "path": "site/theme/style.css",
+        "bytes": 21779,
+        "git_blob": "6b5cc47126b1a8657edf196ee3c2a173484f7164",
+        "sha256": "9f87606ad071c908917c0e0620343f432e9fae27fbe66d994effc4369bdc969b"
+      }
+    ],
+    "adaptation": "Pinned theme loaded by site/build.py; local family entry, actual output hero/gallery, local commands and ownership. Canonical family owner: microsoft. Theme presentation assets are unchanged; build.py-only lint/type adaptations are listed with both hashes."
+  },
+  "samples": [
+    {
+      "file": "blue-hour.jpg",
+      "result_id": "c0d68e2e656f49b8b02b5fb6573c15bf",
+      "parent_result_id": null,
+      "original_png_sha256": "6edf8416bfb9f19652dbf291c02887c40dfff3a826b9c96ff149ee655e56fab7",
+      "display_jpeg_sha256": "f77c40dfeea9b805e6bc1ed1501e7c47c831e180b572c9d0b072177540242ec0",
+      "width": 1200,
+      "height": 896,
+      "derivative": "JPEG quality 88, progressive, original dimensions, no crop or content edits",
+      "reasoning": "OpenAI / gpt-6-luna / medium",
+      "image_service": "Gemini / gemini-3.1-flash-image-preview",
+      "source_candidate_wheel_sha256": "6478b6c14370461e0ac0aa2bb8ed32f7f59f9db890402e6baaa5d5dfc38ea1bf"
+    },
+    {
+      "file": "dawn-revision.jpg",
+      "result_id": "150ec39a17514c0d9a14e908b45d75c9",
+      "parent_result_id": "c0d68e2e656f49b8b02b5fb6573c15bf",
+      "original_png_sha256": "08a309f0fddeab76d636e64cb970fde02b268bc309c0961902b7bb09a50d894c",
+      "display_jpeg_sha256": "3dd49ed2391c27c884250a1c83811d4b51c1997e7d9a15f752a671ffda392961",
+      "width": 1200,
+      "height": 896,
+      "derivative": "JPEG quality 88, progressive, original dimensions, no crop or content edits",
+      "reasoning": "OpenAI / gpt-6-luna / medium",
+      "image_service": "Gemini / gemini-3.1-flash-image-preview",
+      "source_candidate_wheel_sha256": "6478b6c14370461e0ac0aa2bb8ed32f7f59f9db890402e6baaa5d5dfc38ea1bf"
+    },
+    {
+      "file": "guided-original.jpg",
+      "result_id": "3a3db6237e674fc8ba7c7a3b4527fb4c",
+      "parent_result_id": null,
+      "original_png_sha256": "7db7d56b1faf8131f0809b0e1d4090783ed6edf29969a50cc3042d73e5cdff5f",
+      "display_jpeg_sha256": "b3e42ef53b95cb25147d17a418399bdc89c12875891159602738ac0561835927",
+      "width": 896,
+      "height": 3600,
+      "derivative": "JPEG quality 88, progressive, original dimensions, no crop or content edits",
+      "reasoning": "Anthropic / claude-haiku-5-5 / medium",
+      "image_service": "Gemini / gemini-3.1-flash-image-preview",
+      "source_candidate_wheel_sha256": "03ae9aee37a31a8c4ad248a3a8c24a44d2c8f41c90105a314d619db9f013b521"
+    },
+    {
+      "file": "guided-new-revision.jpg",
+      "result_id": "76b07e9dc5a544bf8d3053aa772089b4",
+      "parent_result_id": "3a3db6237e674fc8ba7c7a3b4527fb4c",
+      "original_png_sha256": "a5a91983c5417218e124fc9345301b0f2956ab6a5d5e408136a61153cce821eb",
+      "display_jpeg_sha256": "7e6dded9ec819b183d8d90a7c6ca55e37c3d5b10dc95a074df7a9c45271636ba",
+      "width": 896,
+      "height": 3600,
+      "derivative": "JPEG quality 88, progressive, original dimensions, no crop or content edits",
+      "reasoning": "Anthropic / claude-haiku-5-5 / medium",
+      "image_service": "Gemini / gemini-3.1-flash-image-preview",
+      "source_candidate_wheel_sha256": "818c3702c77540f18d3d491b29613857b17ab269e695dc316633e45bbb6413d9"
+    }
+  ]
+}

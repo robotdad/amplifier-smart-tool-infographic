@@ -44,8 +44,10 @@ let the caller refine that retained work without losing the original.
 - No dependence on an outer Amplifier bundle session or private runtime patches.
 - No invented facts, hidden provider fallback, fabricated review, or demo images
   substituted for model output. Caller material is data, not tool authority.
-- No public deployment, catalog submission, global credential changes, or scraping
-  private user files. Platform portability is a goal, not a claim of tested parity.
+- No hosted generation service, catalog submission, global credential changes, or
+  scraping private user files. A public static GitHub Pages product site is now
+  authorized; it does not expose the local generator or service credentials.
+  Platform portability is a goal, not a claim of tested parity.
 - No reproduction of the source bundle's code, prompts, or images. This is an
   independent implementation of its functional approach with attribution.
 
@@ -93,6 +95,24 @@ Simulated journeys supply observed usability evidence, not invented human approv
 Drafting contracts does not ratify or lock their wording.
 
 ## Draft contracts
+
+### Publication direction
+
+The user subsequently authorized:
+
+> commit and push what we have, look at the smart tool catalog and create the gh io pages from the templates there for it. Use unfold to figure out a logo for this, make an animated version of it to use in the io page.
+
+This authorizes source publication and a static product site using catalog
+templates, with Unfold-generated branding and animation. It does not turn the
+static site into a hosted image service or ratify the draft contracts.
+
+After rejecting the initial logo, the user directed:
+
+> Can you publish the site without the logo? Then get to work on a new one?
+
+Publish the static site without the rejected product mark or animation.
+Replacement branding remains a separate design task and is reviewed before
+being added to the live site.
 
 - [Creation and refinement](../contracts/creation-refinement.v1.md)
 - [Retained work](../contracts/retained-work.v1.md)
